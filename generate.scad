@@ -1,10 +1,10 @@
 use <connectors.scad>
 
 // which object is to be generated
-generate = "default"; // [ellbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
+generate = "default"; // [elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
 
-if (generate == "ellbow") {
-    ellbow();
+if (generate == "elbow") {
+    elbow();
 } else if (generate == "threeWay") {
     threeWay();
 } else if (generate == "threeWayUp") {

@@ -8,8 +8,8 @@ jobs:
         uses: actions/checkout@v4.2.2
       - name: 'Install OpenSCAD'
         run: sudo apt install -y openscad
-      - name: 'Generate ellbow'
-        run: openscad -o ellbow.stl generate.scad -D 'generate="ellbow"'
+      - name: 'Generate elbow'
+        run: openscad -o elbow.stl generate.scad -D 'generate="elbow"'
       - name: 'Generate threeWay'
         run: openscad -o threeWay.stl generate.scad -D 'generate="threeWay"'
       - name: 'Generate threeWayUp'

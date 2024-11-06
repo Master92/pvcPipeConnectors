@@ -59,19 +59,19 @@ module up() {
     }
 }
 
-module ellbow() {
+module elbow() {
     base();
     front();
     right();
 }
 
 module threeWay() {
-    ellbow();
+    elbow();
     left();
 }
 
 module threeWayUp() {
-    ellbow();
+    elbow();
     up();
 }
 
