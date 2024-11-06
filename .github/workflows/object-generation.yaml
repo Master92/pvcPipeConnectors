@@ -1,0 +1,26 @@
+name: STL file generation
+on: [push]
+jobs:
+  generate-stl-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out repo'
+        uses: actions/checkout@v4.2.2
+      - name: 'Install OpenSCAD'
+        run: sudo apt install -y openscad
+      - name: 'Generate ellbow'
+        run: openscad -o ellbow.stl generate.scad -D 'generate="ellbow"'
+      - name: 'Generate threeWay'
+        run: openscad -o threeWay.stl generate.scad -D 'generate="threeWay"'
+      - name: 'Generate threeWayUp'
+        run: openscad -o threeWayUp.stl generate.scad -D 'generate="threeWayUp"'
+      - name: 'Generate fourWay'
+        run: openscad -o fourWay.stl generate.scad -D 'generate="fourWay"'
+      - name: 'Generate fourWayUp'
+        run: openscad -o fourWayUp.stl generate.scad -D 'generate="fourWayUp"'
+      - name: 'Generate fiveWay'
+        run: openscad -o fiveWay.stl generate.scad -D 'generate="fiveWay"'
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ github.workspace }}/*.stl
