@@ -8,11 +8,14 @@ connectorLength = 20;
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
 innerRadius = (sideLength * (1 + sqrt(2))) / 2;
 
+shiftValue = connectorDiameter / 2;
+edgeRadius = 1;
+eps = 0.1;
+
 module base() {
-    edgeRadius = 1;
-    translate([0, 0, edgeRadius])
+    translate([0, 0, edgeRadius - eps])
         minkowski() {
-            cube(2 * innerRadius);
+            cube(connectorDiameter);
             sphere(r=edgeRadius);
         }
 }
@@ -25,51 +28,71 @@ module connector() {
                 cube([sideLength, innerRadius * 2, connectorLength + edgeRadius]);
             
     }
+    
+    translate([0, 0, edgeRadius])
+        cylinder(h = connectorLength - edgeRadius, r1 = connectorDiameter / 2, r2 = 5);
+}
+
+module subtractor() {
+    w = 100;
+    l = 100;
+    h = 20;
+    translate([-w / 2, -l / 2, -h]) cube([w, l, h]);
 }
 
 module front() {
-    translate([innerRadius, 0, innerRadius]) {
+    translate([shiftValue, 0, innerRadius]) {
         rotate([90, 0, 0])
-                connector();   
+            connector();   
     }
 }
 
 module back() {
-    translate([innerRadius, 2 * innerRadius, innerRadius]) {
+    translate([shiftValue, 2 * shiftValue, innerRadius]) {
         rotate([-90, 0, 0]) 
-                connector();   
+            connector();   
     }
 }
 
 module right() {
-    translate([2 * innerRadius, innerRadius, innerRadius]) {
+    translate([2 * shiftValue, shiftValue, innerRadius]) {
         rotate([0, 90, 0])
-                connector();
+            connector();
     }
 }
 
 module left() {
-    translate([0, innerRadius, innerRadius]) {
+    translate([0, shiftValue, innerRadius]) {
         rotate([0, -90, 0])
-                connector();
+            connector();
     }
 }
 
 module up() {
-    translate([innerRadius, innerRadius, connectorDiameter]) {
+    translate([shiftValue, shiftValue, 2 * shiftValue + edgeRadius - eps]) {
         connector();
     }
 }
 
 module elbow() {
-    base();
-    front();
-    right();
+    difference() {
+        union() {
+            base();
+            front();
+            right();
+        }
+        subtractor();
+    }
 }
 
 module threeWay() {
-    elbow();
-    left();
+    difference() {
+        union() {
+            elbow();
+            left();
+        }
+        subtractor();
+    }
 }
 
 module threeWayUp() {
@@ -78,8 +101,13 @@ module threeWayUp() {
 }
 
 module fourWay() {
-    threeWay();
-    back();
+    difference() {
+        union() {
+            threeWay();
+            back();
+        }
+        subtractor();
+    }
 }
 
 module fourWayUp() {
