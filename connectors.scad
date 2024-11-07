@@ -1,6 +1,8 @@
 $fn = $preview ? 32 : 64;
 
+// Set this to the inner diameter of your PVC pipe
 connectorDiameter = 18.3;
+// How long shall the connector protrude into your pipe
 connectorLength = 20;
 
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
