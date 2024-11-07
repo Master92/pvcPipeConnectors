@@ -20,7 +20,7 @@ module connector() {
     for (i = [0:facetCount / 2 - 1]) {
         rotate([0, 0, 360 * i / facetCount])
             translate([-sideLength / 2, -innerRadius, 0])
-                cube([sideLength, innerRadius * 2, connectorLength]);
+                cube([sideLength, innerRadius * 2, connectorLength + edgeRadius]);
             
     }
 }
