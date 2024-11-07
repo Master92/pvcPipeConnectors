@@ -29,7 +29,8 @@ module connector() {
             
     }
     
-    cylinder(h = connectorLength, r1 = connectorDiameter / 2, r2 = 5);
+    translate([0, 0, edgeRadius])
+        cylinder(h = connectorLength - edgeRadius, r1 = connectorDiameter / 2, r2 = 5);
 }
 
 module subtractor() {
