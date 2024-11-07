@@ -32,6 +32,13 @@ module connector() {
     cylinder(h = connectorLength, r1 = connectorDiameter / 2, r2 = 5);
 }
 
+module subtractor() {
+    w = 100;
+    l = 100;
+    h = 20;
+    translate([-w / 2, -l / 2, -h]) cube([w, l, h]);
+}
+
 module front() {
     translate([shiftValue, 0, innerRadius]) {
         rotate([90, 0, 0])
@@ -67,14 +74,24 @@ module up() {
 }
 
 module elbow() {
-    base();
-    front();
-    right();
+    difference() {
+        union() {
+            base();
+            front();
+            right();
+        }
+        subtractor();
+    }
 }
 
 module threeWay() {
-    elbow();
-    left();
+    difference() {
+        union() {
+            elbow();
+            left();
+        }
+        subtractor();
+    }
 }
 
 module threeWayUp() {
@@ -83,8 +100,13 @@ module threeWayUp() {
 }
 
 module fourWay() {
-    threeWay();
-    back();
+    difference() {
+        union() {
+            threeWay();
+            back();
+        }
+        subtractor();
+    }
 }
 
 module fourWayUp() {
