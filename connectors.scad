@@ -4,6 +4,8 @@ $fn = $preview ? 32 : 64;
 connectorDiameter = 18.3;
 // How long shall the connector protrude into your pipe
 connectorLength = 20;
+// which object is to be generated
+generate = "none"; // [none, elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
 
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
 innerRadius = (sideLength * (1 + sqrt(2))) / 2;
@@ -11,6 +13,23 @@ innerRadius = (sideLength * (1 + sqrt(2))) / 2;
 shiftValue = connectorDiameter / 2;
 edgeRadius = 1;
 eps = 0.1;
+
+if (generate == "elbow") {
+    elbow();
+} else if (generate == "threeWay") {
+    threeWay();
+} else if (generate == "threeWayUp") {
+    threeWayUp();
+} else if (generate == "fourWay") {
+    fourWay();
+} else if (generate == "fourWayUp") {
+    fourWayUp();
+} else if (generate == "fiveWay") {
+    fiveWay();
+} else {
+    echo("No suitable object selected! Valid values are: \
+[elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]");
+}
 
 module base() {
     translate([0, 0, edgeRadius - eps])
