@@ -4,7 +4,7 @@ $fn = $preview ? 32 : 64;
 connectorDiameter = 18.3;
 // How long shall the connector protrude into your pipe
 connectorLength = 20;
-// which object is to be generated
+// Which object is to be generated
 generate = "none"; // [none, elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
 
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
