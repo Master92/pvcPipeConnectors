@@ -6,6 +6,8 @@ connectorDiameter = 18.3;
 connectorLength = 20;
 // Which object is to be generated
 generate = "none"; // [none, elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
+// How much bigger shall the diameter of the connector going up be
+scaleFactor = 1.01;
 
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
 innerRadius = (sideLength * (1 + sqrt(2))) / 2;
@@ -39,17 +41,19 @@ module base() {
         }
 }
 
-module connector() {
+module connector(isTop = false) {
     facetCount = 8;
+    diameter = innerRadius * 2 * (isTop ? scaleFactor : 1);
+    _sideLength = sideLength * (isTop ? scaleFactor : 1);
     for (i = [0:facetCount / 2 - 1]) {
         rotate([0, 0, 360 * i / facetCount])
-            translate([-sideLength / 2, -innerRadius, 0])
-                cube([sideLength, innerRadius * 2, connectorLength + edgeRadius]);
+            translate([-_sideLength / 2, -diameter / 2, 0])
+                cube([_sideLength, diameter, connectorLength + edgeRadius]);
             
     }
     
     translate([0, 0, edgeRadius])
-        cylinder(h = connectorLength - edgeRadius, r1 = connectorDiameter / 2, r2 = 5);
+        cylinder(h = connectorLength - edgeRadius, r1 = (connectorDiameter * (isTop ? scaleFactor : 1)) / 2, r2 = 5);
 }
 
 module subtractor() {
@@ -89,7 +93,7 @@ module left() {
 
 module up() {
     translate([shiftValue, shiftValue, 2 * shiftValue + edgeRadius - eps]) {
-        connector();
+        connector(true);
     }
 }
 
