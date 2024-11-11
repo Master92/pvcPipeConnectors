@@ -2,6 +2,9 @@ name: STL file generation
 on: [push]
 jobs:
   generate-stl-files:
+    strategy:
+      matrix:
+        abs: [ON, OFF]
     runs-on: ubuntu-latest
     steps:
       - name: 'Check out repo'
@@ -9,14 +12,15 @@ jobs:
       - name: 'Reusable strings'
         id: strings
         shell: bash
-        run: echo "build_dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        run: echo "build_dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT" && echo "abs=${{ matrix.abs }}" >> "$GITHUB_OUTPUT"
       - name: 'Install OpenSCAD'
         run: sudo apt install -y openscad
       - name: 'Configure CMake'
-        run: cmake -B ${{ steps.strings.outputs.build_dir }}
+        run: cmake -B ${{ steps.strings.outputs.build_dir }} -DABS=${{ matrix.abs }}
       - name: 'Generate STL files'
         run: cmake --build ${{ steps.strings.outputs.build_dir }} --parallel
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v4
         with:
+          name: ${{ matrix.abs && 'ABS' || 'normal' }}
           path: ${{ steps.strings.outputs.build_dir }}/*.stl
