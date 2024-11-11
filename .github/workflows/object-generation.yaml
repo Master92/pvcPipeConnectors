@@ -6,21 +6,17 @@ jobs:
     steps:
       - name: 'Check out repo'
         uses: actions/checkout@v4.2.2
+      - name: 'Reusable strings'
+        id: strings
+        shell: bash
+        run: echo "build_dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
       - name: 'Install OpenSCAD'
         run: sudo apt install -y openscad
-      - name: 'Generate elbow'
-        run: openscad -o elbow.stl connectors.scad -D 'generate="elbow"'
-      - name: 'Generate threeWay'
-        run: openscad -o threeWay.stl connectors.scad -D 'generate="threeWay"'
-      - name: 'Generate threeWayUp'
-        run: openscad -o threeWayUp.stl connectors.scad -D 'generate="threeWayUp"'
-      - name: 'Generate fourWay'
-        run: openscad -o fourWay.stl connectors.scad -D 'generate="fourWay"'
-      - name: 'Generate fourWayUp'
-        run: openscad -o fourWayUp.stl connectors.scad -D 'generate="fourWayUp"'
-      - name: 'Generate fiveWay'
-        run: openscad -o fiveWay.stl connectors.scad -D 'generate="fiveWay"'
+      - name: 'Generate objects'
+        run: >
+          cmake -B ${{ steps.strings.outputs.build_dir }}
+          cmake --build ${{ steps.strings.outputs.build_dir }}
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ github.workspace }}/*.stl
+          path: ${{ steps.strings.outputs.build_dir }}/*.stl
