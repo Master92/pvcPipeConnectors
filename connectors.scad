@@ -7,7 +7,7 @@ connectorLength = 20;
 // Which object is to be generated
 generate = "none"; // [none, elbow, threeWay, threeWayUp, fourWay, fourWayUp, fiveWay]
 // How much bigger shall the diameter of the connector going up be
-scaleFactor = 1.01;
+scaleFactor = 1.0;
 
 sideLength = connectorDiameter / (sqrt(4 + 2 * sqrt(2)));
 innerRadius = (sideLength * (1 + sqrt(2))) / 2;
