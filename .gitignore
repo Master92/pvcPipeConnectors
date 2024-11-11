@@ -1,1 +1,4 @@
 *.stl
+*build*
+.idea
+out
